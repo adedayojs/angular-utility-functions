@@ -35,7 +35,9 @@ export class ShowIfInvalidDirective implements OnInit, OnDestroy {
         // Listen to changes in the control's state (dirty and invalid)
         control.statusChanges.pipe(takeWhile(() => this.isActive)).subscribe(() => {
             if (control.dirty && control.invalid) {
-                this.viewContainerRef.createEmbeddedView(this.templateRef);
+                if (this.viewContainerRef.length <= 0) { // Do not add the view if it already exists
+                    this.viewContainerRef.createEmbeddedView(this.templateRef);
+                }
             } else {
                 this.viewContainerRef.clear();
             }
